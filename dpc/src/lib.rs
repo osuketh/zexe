@@ -54,7 +54,7 @@ extern crate failure_derive;
 pub mod common;
 pub mod config;
 pub mod crypto_primitives;
-pub(crate) mod dpc;
+pub mod dpc;
 pub mod gadgets;
 pub mod ledger;
 pub mod predicates;
