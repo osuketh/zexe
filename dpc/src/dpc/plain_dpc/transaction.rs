@@ -2,6 +2,7 @@ use crate::{
     crypto_primitives::{CommitmentScheme, NIZK, PRF},
     dpc::{plain_dpc::PlainDPCComponents, Transaction},
 };
+// use algebra::bytes::ToBytes;
 
 #[derive(Derivative)]
 #[derivative(
@@ -10,9 +11,9 @@ use crate::{
     Eq(bound = "C: PlainDPCComponents")
 )]
 pub struct DPCTransaction<C: PlainDPCComponents> {
-    old_serial_numbers: Vec<<C::P as PRF>::Output>,
-    new_commitments:    Vec<<C::RecC as CommitmentScheme>::Output>,
-    memorandum:         [u8; 32],
+    pub old_serial_numbers: Vec<<C::P as PRF>::Output>,
+    pub new_commitments:    Vec<<C::RecC as CommitmentScheme>::Output>,
+    pub memorandum:         [u8; 32],
     pub stuff:          DPCStuff<C>,
 }
 
@@ -33,6 +34,18 @@ pub struct DPCStuff<C: PlainDPCComponents> {
     #[derivative(PartialEq = "ignore")]
     pub local_data_comm: <C::LocalDataComm as CommitmentScheme>::Output,
 }
+
+// impl<C: PlainDPCComponents> DPCStuff<C> {
+//     pub fn write<W: std::io::Write>(&self, mut writer: W) -> std::io::Result<()> {
+//         // writer.write_all(self.digest.)
+//         self.digest.write(writer).unwrap();
+//         self.core_proof.write(writer).unwrap();
+//         self.predicate_proof.write(writer).unwrap();
+//         self.predicate_comm.write(writer).unwrap();
+//         self.local_data_comm.write(writer).unwrap();
+//         Ok(())
+//     }
+// }
 
 impl<C: PlainDPCComponents> DPCTransaction<C> {
     pub fn new(
